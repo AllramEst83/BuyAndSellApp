@@ -1,4 +1,6 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using BuyAndSellAppWeb.Models;
+using BuyAndSellAppWeb.Repository;
+using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,42 +11,136 @@ namespace BuyAndSellAppWeb.Controllers
 {
     public class HomeController : Controller
     {
+        //Repo------------------------------------------------------
+        private IBuyAndSellRepository _BuyAndSellRepository = null;
+        public HomeController()
+        {
+            this._BuyAndSellRepository = new BuyAndSellRepository();
+        }
+        public HomeController(IBuyAndSellRepository repository)
+        {
+            this._BuyAndSellRepository = repository;
+        }
+        //-----------------------------------------------------------
         [SharePointContextFilter]
         public ActionResult Index()
         {
-            User spUser = null;
+            MySession.Current.spcontext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 
-            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
-
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
             {
-                if (clientContext != null)
+                if (!_BuyAndSellRepository.CheckTermGroupName(context))
                 {
-                    spUser = clientContext.Web.CurrentUser;
+                    _BuyAndSellRepository.CreateTermSet(context);
+                }
+            }
+            return RedirectToAction("MainView");
+        }
 
-                    clientContext.Load(spUser, user => user.Title);
+        public ActionResult MainView()
+        {
+            List<Advertisment> ViewModel = new List<Advertisment>();
 
-                    clientContext.ExecuteQuery();
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (context != null)
+                {
+                    ViewModel = _BuyAndSellRepository.GetItems(context, _BuyAndSellRepository.ANNONSLISTA);
+                    ViewBag.category = _BuyAndSellRepository.GetTaxanomy(context);
+                }
+            }
+            return View(ViewModel);
+        }
 
-                    ViewBag.UserName = spUser.Title;
+        public ActionResult AddAdvertisement()
+        {
+
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (context != null)
+                {
+                    ViewBag.category = _BuyAndSellRepository.GetTaxanomy(context);
+                }
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddAdvertisementToSharePoint(Advertisment formData)
+        {
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (ModelState.IsValid && context != null)
+                {
+                    _BuyAndSellRepository.AddToSharePoinList(context, formData, _BuyAndSellRepository.ANNONSLISTA);
+                }
+                else
+                {
+                    return RedirectToAction("AddAdvertisement");
                 }
             }
 
-            return View();
+            return RedirectToAction("MainView");
         }
 
-        public ActionResult About()
+        public ActionResult DeleteItem(int? id)
         {
-            ViewBag.Message = "Your application description page.";
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (!String.IsNullOrEmpty(id.ToString()) && context != null)
+                {
+                    _BuyAndSellRepository.DeleteItem(context, _BuyAndSellRepository.ANNONSLISTA, Convert.ToInt32(id));
+                }
 
-            return View();
+            }
+            return RedirectToAction("MainView");
         }
 
-        public ActionResult Contact()
+        public ActionResult Edit(int? id)
         {
-            ViewBag.Message = "Your contact page.";
+            Advertisment ViewModel = new Advertisment();
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (context != null)
+                {
+                    ViewModel = _BuyAndSellRepository.GetListItem(context, _BuyAndSellRepository.ANNONSLISTA, Convert.ToInt32(id));
 
-            return View();
+                    ViewBag.category = _BuyAndSellRepository.GetTaxanomy(context);
+                }
+            }
+            return View(ViewModel);
         }
+
+        public ActionResult UpdateItemInSharePoint(Advertisment formData)
+        {
+
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (ModelState.IsValid && context != null)
+                {
+                    _BuyAndSellRepository.ModifyItem(context, _BuyAndSellRepository.ANNONSLISTA, formData);
+                }
+                else
+                {
+                    return RedirectToAction("Edit");
+                }
+            }
+            return RedirectToAction("MainView");
+        }
+
+        public ActionResult Details(int? id)
+        {
+            Advertisment ViewModel = new Advertisment();
+            using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
+            {
+                if (context != null)
+                {
+                    ViewModel = _BuyAndSellRepository.GetDeatils(context, _BuyAndSellRepository.ANNONSLISTA, Convert.ToInt32(id));
+                                        
+                }
+            }
+            return View(ViewModel);
+        }
+
     }
 }

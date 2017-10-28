@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="BuyAndSellApp"
      ProductID="{62614db9-b77a-46a3-8f2e-a9ee69a201bf}"
-     Version="1.0.0.0"
+     Version="1.0.0.2"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
@@ -14,4 +14,8 @@
   <AppPrincipal>
     <RemoteWebApplication ClientId="*" />
   </AppPrincipal>
+  <AppPermissionRequests AllowAppOnlyPolicy="true" >
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="Manage" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
+  </AppPermissionRequests>
 </App>

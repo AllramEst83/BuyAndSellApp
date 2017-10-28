@@ -26,9 +26,13 @@ namespace BuyAndSellAppWeb
             bundles.Add(new ScriptBundle("~/bundles/spcontext").Include(
                         "~/Scripts/spcontext.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/BuySell").Include(
+                 "~/Scripts/BuySell.js"));
+            
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/BuyAndSell.css"));
         }
     }
 }

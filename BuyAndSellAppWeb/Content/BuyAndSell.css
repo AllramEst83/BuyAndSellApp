@@ -1,0 +1,21 @@
+﻿table th{
+    cursor:pointer;
+}
+.title {
+    text-align: center;
+    font-size: 50px;
+}
+#dropdown {
+    float: left;
+    margin-left: 15px;
+}
+
+.search{
+    float:left;
+}
+
+p {
+    margin: 0px 0 15px;
+}
+
+

@@ -1,0 +1,77 @@
+﻿@model BuyAndSellAppWeb.Models.Advertisment
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Advertisment</h4>
+    <hr />
+
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductTitle)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductTitle)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price) kr
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Category)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Seller)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Seller)
+        </dd>
+    </dl>
+    <div style="margin-bottom:20px; width:35px;">
+        <img src="@Model.ImageUrl" style="width:300px;"/>
+    </div>
+</div>
+<p>
+    @if(Model.SellerToken)
+    {
+
+        @Html.ActionLink("Ändra", "Edit", new { id = Model.ID })
+    }
+
+
+    | @Html.ActionLink("Back to List", "MainView") | @Html.ActionLink("Köp", "DeleteItem", new { id = Model.ID })
+    
+
+</p>
