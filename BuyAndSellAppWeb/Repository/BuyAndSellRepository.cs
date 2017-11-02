@@ -341,7 +341,6 @@ namespace BuyAndSellAppWeb.Repository
         void CreateTermSet(ClientContext context);
         bool CheckTermGroupName(ClientContext context);
         Advertisment GetDeatils(ClientContext context, string listTitle, int id);
-
         //Functions-------------------------------------------------------------------------
         //Properties-----------------------
         string ANNONSLISTA { get; set; }

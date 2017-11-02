@@ -36,7 +36,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return RedirectToAction("MainView");
         }
-
+        //MainView---
         public ActionResult MainView()
         {
             List<Advertisment> ViewModel = new List<Advertisment>();
@@ -51,7 +51,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return View(ViewModel);
         }
-
+        //AddAdvertisement---
         public ActionResult AddAdvertisement()
         {
 
@@ -64,7 +64,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return View();
         }
-
+        //AddAdvertisementToSharePoint---
         [HttpPost]
         public ActionResult AddAdvertisementToSharePoint(Advertisment formData)
         {
@@ -82,7 +82,7 @@ namespace BuyAndSellAppWeb.Controllers
 
             return RedirectToAction("MainView");
         }
-
+        //DeleteItem---
         public ActionResult DeleteItem(int? id)
         {
             using (var context = MySession.Current.spcontext.CreateUserClientContextForSPHost())
@@ -95,7 +95,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return RedirectToAction("MainView");
         }
-
+        //Edit---
         public ActionResult Edit(int? id)
         {
             Advertisment ViewModel = new Advertisment();
@@ -110,7 +110,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return View(ViewModel);
         }
-
+        //UpdateItemInSharePoint---
         public ActionResult UpdateItemInSharePoint(Advertisment formData)
         {
 
@@ -127,7 +127,7 @@ namespace BuyAndSellAppWeb.Controllers
             }
             return RedirectToAction("MainView");
         }
-
+        //Details---
         public ActionResult Details(int? id)
         {
             Advertisment ViewModel = new Advertisment();

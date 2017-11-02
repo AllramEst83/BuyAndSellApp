@@ -12,8 +12,8 @@
                 <thead>
                     <tr>
                         <th>Handlingar</th>
-                        <th>Title</th>
-                        <th>Pris i kr</th>
+                        <th id="Title">Title</th>
+                        <th id="price">Pris i kr</th>
                         <th>Skapad</th>
                         <th>Kategori</th>
                     </tr>
@@ -21,14 +21,11 @@
                 <tbody>
                     @foreach (BuyAndSellAppWeb.Models.Advertisment objProduct in Model)
                     {
-
                         <tr>
                             @if (objProduct.SellerToken)
                             {
                                 <td>
-
                                     @Html.ActionLink("Ändra", "Edit", new { id = objProduct.ID }) | @Html.ActionLink("Radera", "DeleteItem", new { id = objProduct.ID }) @*|@Html.ActionLink("Detaljer", "Details", new { id = objProduct.ID })*@
-
                                 </td>
                             }
                             else
@@ -37,12 +34,12 @@
                                     @Html.ActionLink("Detaljer", "Details", new { id = objProduct.ID })
                                 </td>
                             }
-                            <td>                       
-                                @Html.ActionLink(@objProduct.ProductTitle, "Details", new { id = objProduct.ID })  
+                            <td>
+                                @Html.ActionLink(@objProduct.ProductTitle, "Details", new { id = objProduct.ID })
                             </td>
                             <td>@objProduct.Price kr</td>
                             <td>@objProduct.Created.ToString("yyyy/MMM/dd")</td>
-                            <td id="category">@objProduct.Category</td>
+                            <td class="category">@objProduct.Category</td>
                         </tr>
                     }
                 </tbody>
